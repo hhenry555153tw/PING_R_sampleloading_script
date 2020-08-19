@@ -10,7 +10,7 @@ source("PING_run_all.R")
 sample_location <- "/work1/r07424021/"
 
 # set file name
-fastq_pattern_1 <-  "IHW9007_S47_L001_R1_001.fastqgz"
+fastq_pattern_1 <-  "IHW9007_S47_L001_R1_001.fastq.gz"
 fastq_pattern_2 <-  "IHW9007_S47_L001_R2_001.fastq.gz"
 result_directory <- "/pkg/biology/PING/PING_v1.0.0/IHW9007/"
 
