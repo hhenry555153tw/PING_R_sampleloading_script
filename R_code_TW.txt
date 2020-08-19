@@ -1,0 +1,36 @@
+# Setting work directory ---------------
+setwd("/pkg/biology/PING/PING_v1.0.0/")
+getwd()
+dir()
+
+# Source package ---------------
+source("PING_run_all.R")
+
+# Setting variables ---------------
+sample_location <- "/work1/r07424021/"
+
+# set file name
+fastq_pattern_1 <-  "IHW9007_S47_L001_R1_001.fastqgz"
+fastq_pattern_2 <-  "IHW9007_S47_L001_R2_001.fastq.gz"
+result_directory <- "/pkg/biology/PING/PING_v1.0.0/IHW9007/"
+
+
+# Call PING
+ping_run_all(sample.location = sample_location, fastq.pattern.1 = fastq_pattern_1, 
+fastq.pattern.2 = fastq_pattern_2, bowtie.threads = 4, results.directory = result_directory)
+
+source("PING_extractor_v1.0.R")
+ping_extractor(sample.location = sample_location, fastq.pattern.1 = fastq_pattern_1, 
+fastq.pattern.2 = fastq_pattern_2, bowtie.threads = 4)
+
+source("PING_gc_caller_v1.1.R")
+ping_gc_caller( run.MIRA = T, run.KFF = T, make.graphs = T, sample.location = “PING_sequences/”,threshold.file = “Resources/gc_resources/defaultThresholds.txt”, threshold.KFF = 0.2, read.cap = 120000, results.directory = “” )
+
+ping_recalc( mira.csv = “MIRA_count_table.csv”,threshold.file = “Resources/gc_resources/defaultThresholds.txt”, make.graphs = T, results.directory = “” )
+
+source("PING_allele_caller_v1.0.R")
+ping_allele_caller( sample.location = “PING_sequences/”, fastq.pattern.1 = “_1.fastq”, 
+fastq.pattern.2 = “_2.fastq”, 
+bowtie.threads = 4, 
+supported.loci = c("2DL1", "2DL23", "2DL4", "2DL5", "2DS3", "2DS4", "2DS5", "2DP1", "3DL1", "3DS1", "3DL2", "3DL3"), 
+ping.gc.output = “Combined_results.csv”, results.directory = “” )
